@@ -1,21 +1,23 @@
 export const defaultTheme = {
-  primary: '#DBAC2C',
-  'primary-dark': '#C47F17',
-  'primary-light': '#F1E9C9',
+  colors: {
+    primary: '#DBAC2C',
+    'primary-dark': '#C47F17',
+    'primary-light': '#F1E9C9',
 
-  secondary: '#8047F8',
-  'secondary-dark': '#4B2995',
-  'secondary-light': '#EBE5F9',
+    secondary: '#8047F8',
+    'secondary-dark': '#4B2995',
+    'secondary-light': '#EBE5F9',
 
-  'gray-100': '#FAFAFA', // background
-  'gray-200': '#F3F2F2', // base-card
-  'gray-300': '#EDEDED', // base-input
-  'gray-400': '#E6E5E5', // base-button
-  'gray-500': '#D7D5D5', // base-hover
-  'gray-600': '#8D8686', // base-label
-  'gray-700': '#574F4D', // base-text
-  'gray-800': '#403937', // base-subtitle
-  'gray-900': '#272221', // base-title
+    background: '#FAFAFA',
+    'base-card': '#F3F2F2',
+    'base-input': '#EDEDED',
+    'base-button': '#E6E5E5',
+    'base-hover': '#D7D5D5',
+    'base-label': '#8D8686',
+    'base-text': '#574F4D',
+    'base-subtitle': '#403937',
+    'base-title': '#272221',
 
-  white: '#FFFFFF',
+    white: '#FFFFFF',
+  },
 } as const;
