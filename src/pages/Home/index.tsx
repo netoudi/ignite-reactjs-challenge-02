@@ -1,8 +1,11 @@
 import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react';
 import { coffee } from '@app/data/coffee';
+import { useCart } from '@app/hooks/use-cart';
 import * as S from './styles';
 
 export function Home() {
+  const { addToCart, removeItem, isInCart } = useCart();
+
   return (
     <S.Container>
       <S.Content>
@@ -62,9 +65,15 @@ export function Home() {
                   <S.CardPrice>
                     R$ <span>{item.price}</span>
                   </S.CardPrice>
-                  <S.Cart>
-                    <ShoppingCart size={18} weight="fill" />
-                  </S.Cart>
+                  {isInCart(item.id) ? (
+                    <S.Cart type="button" onClick={() => removeItem(item.id)}>
+                      <ShoppingCart size={18} weight="fill" />
+                    </S.Cart>
+                  ) : (
+                    <S.Cart type="button" onClick={() => addToCart(item)}>
+                      <ShoppingCart size={18} />
+                    </S.Cart>
+                  )}
                 </S.CarFooter>
               </S.Card>
             );
