@@ -1,13 +1,39 @@
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Minus, Money, Plus, Trash } from '@phosphor-icons/react';
 import { Box } from '@app/components/Box';
 import { Divider } from '@app/components/Divider';
 import { useCart } from '@app/hooks/use-cart';
+import { CheckoutFormInputs, checkoutFormSchema } from '@app/pages/Checkout/constants';
 import { centsFormatter } from '@app/utils/formatter';
 import * as S from './styles';
 
 export function Checkout() {
+  const navigate = useNavigate();
   const { items, minusItem, plusItem, removeItem, itemsTotal, deliveryFee, cartTotal } = useCart();
+
+  const form = useForm<CheckoutFormInputs>({
+    resolver: zodResolver(checkoutFormSchema),
+  });
+
+  const errors = form.formState.errors;
+
+  async function handleCheckout(data: CheckoutFormInputs) {
+    console.log(data);
+
+    navigate('/success', {
+      state: { data },
+      replace: true,
+    });
+  }
+
+  React.useEffect(() => {
+    if (Object.keys(errors).length !== 0) {
+      alert('Preenche corretamente o endereço de entrega e a forma de pagamento.');
+    }
+  }, [errors]);
 
   return (
     <S.Wrapper>
@@ -23,21 +49,21 @@ export function Checkout() {
               <p>Informe o endereço onde deseja receber seu pedido</p>
             </S.HeaderTitle>
           </S.Header>
-          <S.Form action="">
+          <S.Form id="form-checkout" onSubmit={form.handleSubmit(handleCheckout)}>
             <S.FormControl>
-              <input type="text" placeholder="CEP" />
+              <input type="text" placeholder="CEP" {...form.register('zipcode')} />
             </S.FormControl>
             <S.FormControl>
-              <input type="text" placeholder="Rua" />
+              <input type="text" placeholder="Rua" {...form.register('street')} />
             </S.FormControl>
             <S.FormControl>
-              <input type="text" placeholder="Número" />
-              <input type="text" placeholder="Complemento" />
+              <input type="text" placeholder="Número" {...form.register('number')} />
+              <input type="text" placeholder="Complemento" {...form.register('complement')} />
             </S.FormControl>
             <S.FormControl>
-              <input type="text" placeholder="Bairro" />
-              <input type="text" placeholder="Cidade" />
-              <input type="text" placeholder="UF" />
+              <input type="text" placeholder="Bairro" {...form.register('district')} />
+              <input type="text" placeholder="Cidade" {...form.register('city')} />
+              <input type="text" placeholder="UF" {...form.register('state')} />
             </S.FormControl>
           </S.Form>
         </Box>
@@ -51,17 +77,25 @@ export function Checkout() {
               <p>O pagamento é feito na entrega. Escolha a forma que deseja pagar</p>
             </S.HeaderTitle>
           </S.Header>
-          <S.PaymentType>
-            <S.Select type="button">
-              <CreditCard size={16} /> Cartão de crédito
-            </S.Select>
-            <S.Select type="button">
-              <Bank size={16} /> Cartão de débito
-            </S.Select>
-            <S.Select type="button">
-              <Money size={16} /> Dinheiro
-            </S.Select>
-          </S.PaymentType>
+          <Controller
+            control={form.control}
+            name="payment"
+            render={({ field }) => {
+              return (
+                <S.PaymentType onValueChange={field.onChange}>
+                  <S.Select value="credit">
+                    <CreditCard size={16} /> Cartão de crédito
+                  </S.Select>
+                  <S.Select value="debit">
+                    <Bank size={16} /> Cartão de débito
+                  </S.Select>
+                  <S.Select value="money">
+                    <Money size={16} /> Dinheiro
+                  </S.Select>
+                </S.PaymentType>
+              );
+            }}
+          />
         </Box>
       </S.ColumnLeft>
       <S.ColumnRight>
@@ -119,7 +153,9 @@ export function Checkout() {
               </div>
             </div>
           </S.Summary>
-          <S.PaymentButton type="submit">Confirmar pedido</S.PaymentButton>
+          <S.PaymentButton type="submit" form="form-checkout">
+            Confirmar pedido
+          </S.PaymentButton>
         </Box>
       </S.ColumnRight>
     </S.Wrapper>

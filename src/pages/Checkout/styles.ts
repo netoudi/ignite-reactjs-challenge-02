@@ -1,3 +1,4 @@
+import * as RadioGroup from '@radix-ui/react-radio-group';
 import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -102,13 +103,13 @@ export const FormControl = styled.div`
   gap: 1.6rem;
 `;
 
-export const PaymentType = styled.div`
+export const PaymentType = styled(RadioGroup.Root)`
   display: flex;
   gap: 1.2rem;
   margin-top: 3.2rem;
 `;
 
-export const Select = styled.button`
+export const Select = styled(RadioGroup.Item)`
   ${({ theme }) => css`
     border: none;
     cursor: pointer;
@@ -121,6 +122,7 @@ export const Select = styled.button`
 
     border-radius: 0.6rem;
     background: ${theme.colors['base-button']};
+    border: 1px solid ${theme.colors['base-button']};
 
     color: ${theme.colors['base-text']};
     font-family: Roboto;
@@ -132,6 +134,17 @@ export const Select = styled.button`
 
     svg {
       color: ${theme.colors['secondary']};
+    }
+
+    &[data-state='unchecked']:hover {
+      transition: background-color 0.2s;
+      background: ${theme.colors['base-hover']};
+    }
+
+    &[data-state='checked'] {
+      color: ${theme.colors['base-subtitle']};
+      background: ${theme.colors['secondary-light']};
+      border: 1px solid ${theme.colors.secondary};
     }
   `};
 `;

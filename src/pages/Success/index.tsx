@@ -1,7 +1,34 @@
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CurrencyDollar, MapPin, Timer } from '@phosphor-icons/react';
+import { useCart } from '@app/hooks/use-cart';
+import { Order } from '@app/utils/models';
+import { payment } from '@app/utils/payment';
 import * as S from './styles';
 
 export function Success() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { itemsTotal, clearCart } = useCart();
+
+  React.useEffect(() => {
+    if (!state) {
+      navigate('/');
+    }
+  }, [navigate, state]);
+
+  React.useEffect(() => {
+    if (itemsTotal !== 0) {
+      clearCart();
+    }
+  }, [clearCart, itemsTotal]);
+
+  if (!state) {
+    return null;
+  }
+
+  const order: Order = state.data;
+
   return (
     <S.Wrapper>
       <div>
@@ -18,9 +45,11 @@ export function Success() {
             </div>
             <div>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelli</strong>, 102
+                Entrega em <strong>{order.street}</strong>, {order.number}
               </p>
-              <p>Farrapos - Porto Alegre, RS</p>
+              <p>
+                {order.district} - {order.city}, {order.state}
+              </p>
             </div>
           </S.Item>
           <S.Item>
@@ -42,7 +71,7 @@ export function Success() {
             </div>
             <div>
               <p>Pagamento na entrega</p>
-              <strong>Cartão de Crédito</strong>
+              <strong>{payment[order.payment]}</strong>
             </div>
           </S.Item>
         </S.Box>

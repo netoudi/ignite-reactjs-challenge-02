@@ -6,3 +6,14 @@ export interface Coffee {
   price: number;
   tags: string[];
 }
+
+export interface Order {
+  zipcode: string;
+  street: string;
+  number: string;
+  complement: string;
+  district: string;
+  city: string;
+  state: string;
+  payment: 'credit' | 'debit' | 'money';
+}
