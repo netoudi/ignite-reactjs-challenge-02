@@ -30,7 +30,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = React.useState<CartItem[]>([]);
 
   const itemsTotal = items.reduce((acc, cur) => acc + cur.total, 0);
-  const deliveryFee = 10;
+  const deliveryFee = 10 * 100;
   const cartTotal = itemsTotal + deliveryFee;
   const cartQuantity = items.length;
 
@@ -40,8 +40,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       title: coffee.title,
       image: coffee.image,
       quantity: 1,
-      price: coffee.price,
-      total: coffee.price,
+      price: coffee.price * 100,
+      total: coffee.price * 100,
     };
   }
 
@@ -59,10 +59,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (isInCart(id)) {
       setItems((state) => {
         return state.map((item) => {
-          if (item.id !== id) {
+          if (item.id !== id || item.quantity <= 1) {
             return item;
           }
-          return { ...item, quantity: item.quantity - 1 };
+          item.quantity = item.quantity - 1;
+          item.total = item.quantity * item.price;
+          return item;
         });
       });
     }
@@ -72,10 +74,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (isInCart(id)) {
       setItems((state) => {
         return state.map((item) => {
-          if (item.id !== id) {
+          if (item.id !== id || item.quantity >= 99) {
             return item;
           }
-          return { ...item, quantity: item.quantity + 1 };
+          item.quantity = item.quantity + 1;
+          item.total = item.quantity * item.price;
+          return item;
         });
       });
     }

@@ -1,9 +1,14 @@
+import React from 'react';
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Minus, Money, Plus, Trash } from '@phosphor-icons/react';
 import { Box } from '@app/components/Box';
 import { Divider } from '@app/components/Divider';
+import { useCart } from '@app/hooks/use-cart';
+import { centsFormatter } from '@app/utils/formatter';
 import * as S from './styles';
 
 export function Checkout() {
+  const { items, minusItem, plusItem, removeItem, itemsTotal, deliveryFee, cartTotal } = useCart();
+
   return (
     <S.Wrapper>
       <S.ColumnLeft>
@@ -63,74 +68,54 @@ export function Checkout() {
         <h2>Cafés selecionados</h2>
         <Box>
           <S.Cart>
-            <S.CartItem>
-              <div>
-                <img src="/images/expresso-tradicional.png" alt="" />
-              </div>
-              <div>
-                <span>Expresso Tradicional</span>
-                <S.Actions>
-                  <S.Counter>
-                    <button>
-                      <Minus size={14} />
-                    </button>
-                    <span>0</span>
-                    <button>
-                      <Plus size={14} />
-                    </button>
-                  </S.Counter>
-                  <S.Remove>
-                    <Trash size={16} /> Remover
-                  </S.Remove>
-                </S.Actions>
-              </div>
-              <div>
-                <strong>R$ 9,90</strong>
-              </div>
-            </S.CartItem>
-            <Divider />
-            <S.CartItem>
-              <div>
-                <img src="/images/expresso-tradicional.png" alt="" />
-              </div>
-              <div>
-                <span>Expresso Tradicional</span>
-                <S.Actions>
-                  <S.Counter>
-                    <button>
-                      <Minus size={14} />
-                    </button>
-                    <span>0</span>
-                    <button>
-                      <Plus size={14} />
-                    </button>
-                  </S.Counter>
-                  <S.Remove>
-                    <Trash size={16} /> Remover
-                  </S.Remove>
-                </S.Actions>
-              </div>
-              <div>
-                <strong>R$ 9,90</strong>
-              </div>
-            </S.CartItem>
-            <Divider />
+            {items.map((item) => {
+              return (
+                <React.Fragment key={item.id}>
+                  <S.CartItem>
+                    <div>
+                      <img src={`/images/${item.image}`} alt="" />
+                    </div>
+                    <div>
+                      <span>{item.title}</span>
+                      <S.Actions>
+                        <S.Counter>
+                          <button type="button" onClick={() => minusItem(item.id)}>
+                            <Minus size={14} />
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button type="button" onClick={() => plusItem(item.id)}>
+                            <Plus size={14} />
+                          </button>
+                        </S.Counter>
+                        <S.Remove type="button" onClick={() => removeItem(item.id)}>
+                          <Trash size={16} /> Remover
+                        </S.Remove>
+                      </S.Actions>
+                    </div>
+                    <div>
+                      <strong>{centsFormatter(item.total)}</strong>
+                    </div>
+                  </S.CartItem>
+                  <Divider />
+                </React.Fragment>
+              );
+            })}
           </S.Cart>
           <S.Summary>
             <div>
               <div>Total de itens</div>
-              <div>R$ 29,70</div>
+              <div>{centsFormatter(itemsTotal)}</div>
             </div>
             <div>
               <div>Entrega</div>
-              <div>R$ 3,50</div>
+              <div>{centsFormatter(deliveryFee)}</div>
             </div>
             <div>
               <div>
                 <strong>Total</strong>
               </div>
               <div>
-                <strong>R$ 33,20</strong>
+                <strong>{centsFormatter(cartTotal)}</strong>
               </div>
             </div>
           </S.Summary>
