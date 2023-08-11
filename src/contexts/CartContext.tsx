@@ -1,6 +1,8 @@
 import React from 'react';
 import { Coffee } from '@app/utils/models';
 
+const STORAGE_KEY = '@coffee-delivery:items-1.0.0';
+
 interface CartItem {
   id: number;
   title: string;
@@ -27,7 +29,13 @@ interface CartContextData {
 export const CartContext = React.createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = React.useState<CartItem[]>([]);
+  const [items, setItems] = React.useState<CartItem[]>(() => {
+    const storedStateJSON = localStorage.getItem(STORAGE_KEY);
+    if (storedStateJSON) {
+      return JSON.parse(storedStateJSON);
+    }
+    return [];
+  });
 
   const itemsTotal = items.reduce((acc, cur) => acc + cur.total, 0);
   const deliveryFee = 10 * 100;
@@ -96,6 +104,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   function clearCart() {
     setItems([]);
   }
+
+  React.useEffect(() => {
+    const stateJSON = JSON.stringify(items);
+    localStorage.setItem(STORAGE_KEY, stateJSON);
+  }, [items]);
 
   return (
     <CartContext.Provider
