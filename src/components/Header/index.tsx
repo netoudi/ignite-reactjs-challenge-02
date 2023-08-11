@@ -8,7 +8,7 @@ export function Header() {
   const { cartQuantity } = useCart();
 
   return (
-    <S.Container>
+    <S.Wrapper>
       <S.Logo href="/">
         <img src={logo} alt="Coffee Delivery" />
       </S.Logo>
@@ -22,6 +22,6 @@ export function Header() {
           {cartQuantity > 0 && <S.CartItems>{cartQuantity}</S.CartItems>}
         </S.Cart>
       </S.Actions>
-    </S.Container>
+    </S.Wrapper>
   );
 }

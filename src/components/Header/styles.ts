@@ -1,10 +1,7 @@
 import styled, { css } from 'styled-components';
+import { Container } from '@app/components/Container';
 
-export const Container = styled.div`
-  max-width: 111.2rem;
-  padding: 3.2rem;
-  margin: 0 auto;
-
+export const Wrapper = styled(Container)`
   display: flex;
   justify-content: space-between;
   align-items: center;

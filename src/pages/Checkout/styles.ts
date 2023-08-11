@@ -1,13 +1,9 @@
 import * as RadioGroup from '@radix-ui/react-radio-group';
 import styled, { css } from 'styled-components';
+import { Container } from '@app/components/Container';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled(Container)`
   ${({ theme }) => css`
-    width: 100%;
-    max-width: 115.2rem;
-    padding: 3.2rem 1.6rem;
-    margin: 0 auto;
-
     display: flex;
     gap: 3.2rem;
 

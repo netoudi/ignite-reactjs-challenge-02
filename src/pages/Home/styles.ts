@@ -1,17 +1,14 @@
 import styled, { css } from 'styled-components';
+import { Container } from '@app/components/Container';
 
-export const Container = styled.div`
+export const Wrapper = styled.div`
   width: 100%;
   height: 54.4rem;
   background: url('images/background.png') no-repeat bottom center;
   background-size: cover;
 `;
 
-export const Content = styled.div`
-  max-width: 111.2rem;
-  padding: 3.2rem;
-  margin: 0 auto;
-
+export const Content = styled(Container)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,6 +58,22 @@ export const HeroList = styled.ul`
       border-radius: 100%;
       background-color: orangered;
 
+      &[data-icon='cart'] {
+        background-color: ${(props) => props.theme.colors['primary-dark']};
+      }
+
+      &[data-icon='package'] {
+        background-color: ${(props) => props.theme.colors['base-text']};
+      }
+
+      &[data-icon='timer'] {
+        background-color: ${(props) => props.theme.colors.primary};
+      }
+
+      &[data-icon='coffee'] {
+        background-color: ${(props) => props.theme.colors.secondary};
+      }
+
       font-family: Roboto;
       font-size: 1.6rem;
       font-style: normal;
@@ -79,10 +92,19 @@ export const HeroImage = styled.div``;
 ///
 /// Coffee
 ///
-export const Coffee = styled.div`
-  max-width: 111.2rem;
-  padding: 3.2rem;
-  margin: 0 auto;
+export const Coffee = styled(Container)`
+  ${({ theme }) => css`
+    h2 {
+      color: ${theme.colors['base-subtitle']};
+      font-family: 'Baloo 2';
+      font-size: 3.2rem;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 130%;
+
+      margin-bottom: 5.4rem;
+    }
+  `};
 `;
 
 export const CoffeeList = styled.div`
@@ -90,13 +112,11 @@ export const CoffeeList = styled.div`
   grid-template-columns: repeat(4, 25.6rem);
   grid-column-gap: 3.2rem;
   grid-row-gap: 4rem;
-  margin-top: 3.2rem;
 `;
 
 export const Card = styled.div`
   ${({ theme }) => css`
     width: 100%;
-    background-color: #ccc;
 
     display: flex;
     justify-content: flex-start;
@@ -138,7 +158,7 @@ export const CardDescription = styled.p`
   `};
 `;
 
-export const CarFooter = styled.div`
+export const CardFooter = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;

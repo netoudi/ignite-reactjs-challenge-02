@@ -7,7 +7,7 @@ export function Home() {
   const { addToCart, removeItem, isInCart } = useCart();
 
   return (
-    <S.Container>
+    <S.Wrapper>
       <S.Content>
         <S.HeroText>
           <S.Title>Encontre o café perfeito para qualquer hora do dia</S.Title>
@@ -15,26 +15,26 @@ export function Home() {
 
           <S.HeroList>
             <li>
-              <span>
-                <ShoppingCart size={16} />
+              <span data-icon="cart">
+                <ShoppingCart size={16} weight="fill" />
               </span>
               Compra simples e segura
             </li>
             <li>
-              <span>
-                <Package size={16} />
+              <span data-icon="package">
+                <Package size={16} weight="fill" />
               </span>
               Embalagem mantém o café intacto
             </li>
             <li>
-              <span>
-                <Timer size={16} />
+              <span data-icon="timer">
+                <Timer size={16} weight="fill" />
               </span>
               Entrega rápida e rastreada
             </li>
             <li>
-              <span>
-                <Coffee size={16} />
+              <span data-icon="coffee">
+                <Coffee size={16} weight="fill" />
               </span>
               O café chega fresquinho até você
             </li>
@@ -61,7 +61,7 @@ export function Home() {
                 </S.Tags>
                 <S.CardTitle>{item.title}</S.CardTitle>
                 <S.CardDescription>{item.description}</S.CardDescription>
-                <S.CarFooter>
+                <S.CardFooter>
                   <S.CardPrice>
                     R$ <span>{item.price}</span>
                   </S.CardPrice>
@@ -74,12 +74,12 @@ export function Home() {
                       <ShoppingCart size={18} />
                     </S.Cart>
                   )}
-                </S.CarFooter>
+                </S.CardFooter>
               </S.Card>
             );
           })}
         </S.CoffeeList>
       </S.Coffee>
-    </S.Container>
+    </S.Wrapper>
   );
 }
