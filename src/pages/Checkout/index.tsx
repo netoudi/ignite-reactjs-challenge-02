@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Minus, Money, Plus, Trash } from '@phosphor-icons/react';
 import { Box } from '@app/components/Box';
 import { Divider } from '@app/components/Divider';
+import { Empty } from '@app/components/Empty';
 import { useCart } from '@app/hooks/use-cart';
 import { CheckoutFormInputs, checkoutFormSchema } from '@app/pages/Checkout/constants';
 import { centsFormatter } from '@app/utils/formatter';
@@ -34,6 +35,10 @@ export function Checkout() {
       alert('Preenche corretamente o endereço de entrega e a forma de pagamento.');
     }
   }, [errors]);
+
+  if (items.length === 0) {
+    return <Empty title="Seu carrinho tá vazio" description="Que tal achar um delicioso café para você?" />;
+  }
 
   return (
     <S.Wrapper>
